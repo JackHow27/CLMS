@@ -71,7 +71,7 @@ body {
 /* Banner */
 
 .banner {
-  background-color: #333;
+  background-color: #777676;
   color: white;
   padding: 10px;
   text-align: center;
@@ -85,4 +85,16 @@ body {
 .banner p {
   margin: 0;
   font-size: 16px;
+}
+
+.banner img {
+  max-height: 100px;
+}
+
+table {
+  margin: 0 auto;
+}
+
+th, td {
+  text-align: center;
 }

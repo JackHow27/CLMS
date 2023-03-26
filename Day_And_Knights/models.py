@@ -98,8 +98,6 @@ class Board(models.Model):
     def exists(self):
         return Board.objects.filter(match=self.match, board_number=self.board_number).exists()
 
-
-
 class Match(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='matches')
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches')
@@ -154,4 +152,5 @@ class Match(models.Model):
     
     class Meta:
         verbose_name_plural = "matches"
+
 
