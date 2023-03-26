@@ -2,11 +2,27 @@
 
 {% block content %}
   <h1>List of Matches</h1>
-  <ul>
-    {% for match in matches %}
-      <li>{{ match }}</li>
-    {% empty %}
-      <li>No matches found.</li>
-    {% endfor %}
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Home Team</th>
+        <th>Away Team</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for match in matches%}
+        <tr>
+          <td>{{ match.date }}</td>
+          <td>{{ match.home_team }}</td>
+          <td>{{ match.away_team }}</td>
+          <td><a href="{% url 'match_detail' match.id %}">View Details</a></td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">No matches found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

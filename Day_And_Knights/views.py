@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.views import View
 from .models import Match, Player, Team
 
 def home(request):
@@ -21,4 +22,16 @@ def players(request):
 
 def results(request):
     return render(request, 'results.html')
+
+def match_list(request):
+    matches = Match.objects.all()
+    return render(request, 'match_list.html', {'matches': matches})
+
+class MatchDetailView(View):
+    template_name = 'match.html'
+
+    def get(self, request, pk):
+        match = get_object_or_404(Match, pk=pk)
+        context = {'match': match}
+        return render(request, self.template_name, context)
 
