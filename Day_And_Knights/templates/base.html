@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'Day_And_Knights/style.css' %}">
+    <script src="{% static 'Day_And_Knights/js/main.js' %}"></script>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="banner">
+                <a href="{% url 'home' %}"><img src="{% static 'Day_And_Knights/images/logo.png' %}" alt="DayAndKnights Logo"></a>
+            </div>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'matches' %}">Matches</a></li>
+                <li><a href="{% url 'teams' %}">Teams</a></li>
+                <li><a href="{% url 'players' %}">Players</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; {{ year }} DayAndKnights Chess LMS</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

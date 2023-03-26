@@ -1,0 +1,88 @@
+/* Global styles */
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Homepage specific styles */
+
+.homepage {
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.homepage h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.homepage p {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* Contact page specific styles */
+
+.contact-form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.contact-form input[type="text"],
+.contact-form textarea {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.contact-form input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.contact-form input[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+.contact-form label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.contact-form p.success-message {
+  color: green;
+}
+
+.contact-form p.error-message {
+  color: red;
+}
+
+/* Banner */
+
+.banner {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.banner h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.banner p {
+  margin: 0;
+  font-size: 16px;
+}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Teams - DayAndKnights Chess LMS
+{% endblock %}
+
+{% block content %}
+    <h1>Teams</h1>
+    <ul>
+        {% for team in teams %}
+            <li>{{ team }} - {{ team.captain }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
