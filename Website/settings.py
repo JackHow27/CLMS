@@ -68,6 +68,12 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
+AUTHENTICATION_BACKENDS = [
+    'Day_And_Knights.backends.PlayerBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.BaseBackend',
+]
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

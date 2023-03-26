@@ -3,6 +3,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import Match, League, Team, Player, Board
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.forms import ReadOnlyPasswordHashField 
+from django.forms import PasswordInput
+
 
 def reset_matches(modeladmin, request, queryset):
     for league in queryset:
@@ -60,6 +64,18 @@ class TeamAdmin(admin.ModelAdmin):
     get_leagues.short_description = 'Leagues'
 
 class PlayerAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = Player
+        fields = '__all__'
+        widgets = {
+            'password': forms.PasswordInput(render_value=True),
+            'ecf_rating': forms.NumberInput(attrs={'readonly': True}),
+        }
+
+
+    raw_password = forms.CharField(label='New Password', required=False, widget=PasswordInput)
+    ecf_rating = forms.IntegerField(required=False)
     teams = forms.ModelMultipleChoiceField(
         queryset=Team.objects.all(),
         widget=FilteredSelectMultiple("Teams", is_stacked=False),
@@ -68,6 +84,10 @@ class PlayerAdminForm(forms.ModelForm):
 
     def save(self, commit=True):
         player = super(PlayerAdminForm, self).save(commit=False)
+        if self.cleaned_data.get('generate_password'):
+            password = make_password(None)
+            username = player.username
+            Player.objects.filter(username=username).update(password=password)
         if commit:
             player.save()
         if player.pk:
@@ -76,9 +96,8 @@ class PlayerAdminForm(forms.ModelForm):
                 player.teams.add(team)
         return player
 
-    class Meta:
-        model = Player
-        fields = '__all__'
+
+   
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -92,7 +111,7 @@ class PlayerAdmin(admin.ModelAdmin):
     form = PlayerAdminForm
 
     fieldsets = (
-        (None, {'fields': ('first_name', 'last_name', 'phone_number', 'email', 'ecf_code')}),
+        (None, {'fields': ('first_name', 'last_name', 'phone_number', 'email', 'ecf_code', 'ecf_rating', 'raw_password')}),
         ('Team', {'fields': ('teams',)}),
     )
 
@@ -109,6 +128,7 @@ class PlayerAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         queryset = queryset.prefetch_related('teams')
         return queryset
+    
     
 
 class ResultFilter(admin.SimpleListFilter):

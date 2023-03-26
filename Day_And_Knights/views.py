@@ -1,6 +1,8 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
+from django.contrib.auth import authenticate, login
 from .models import Match, Player, Team
+from django.contrib.auth.forms import AuthenticationForm
 
 def home(request):
     return render(request, 'home.html')
@@ -35,3 +37,15 @@ class MatchDetailView(View):
         context = {'match': match}
         return render(request, self.template_name, context)
 
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'login.html', {'error': 'Invalid credentials'})
+    else:
+        return render(request, 'login.html')

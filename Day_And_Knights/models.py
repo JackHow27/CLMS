@@ -1,6 +1,7 @@
 import requests
 import json
 import datetime
+import uuid
 from datetime import date
 from django.db import models
 from types import SimpleNamespace
@@ -8,6 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth.hashers import make_password, check_password
 
 
 class Player(models.Model):
@@ -16,6 +18,9 @@ class Player(models.Model):
     phone_number = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
     ecf_code = models.CharField(max_length=200)
+    username = models.CharField(default=uuid.uuid4().hex, max_length=150, unique=True)
+    password = models.CharField(max_length=128, blank=True, null=True)
+    ecf_rating = models.IntegerField(blank=True, null=True)
      
     def get_ecf_rating(self):
         url = f'https://www.ecfrating.org.uk/v2/new/list_player.php?code={self.ecf_code}'
@@ -34,6 +39,25 @@ class Player(models.Model):
     
     def name(self):
         return f"{self.first_name} {self.last_name}"
+    
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = self.generate_username()
+        self.ecf_rating = self.get_ecf_rating()
+        super(Player, self).save(*args, **kwargs)
+
+    def generate_username(self):
+        username = f"{self.first_name.lower()}.{self.last_name.lower()}".replace(" ", "")
+        count = Player.objects.filter(username__startswith=username).count()
+        if count == 0:
+            return username
+        else:
+            return f"{username}{count+1}"
+        
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+    
+
 
     
 class League(models.Model):
@@ -106,6 +130,7 @@ class Match(models.Model):
     time = models.TimeField(blank=True, null=True)
     location = models.CharField(max_length=100, blank=True)
     result = models.CharField(max_length=20, blank=True)
+
 
 
     def numeric_result(self, player):
