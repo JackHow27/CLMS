@@ -12,7 +12,7 @@ def schedule_matches(league):
     teams_playing_on_day = [(),()]
 
     # Loop through each match and find a date for it
-    for match in league.matches.all():
+    for match in league.matches.all().order_by('?'):
         # Create a list of teams that are already scheduled to play on the same day
         
         

@@ -23,12 +23,14 @@ class Player(models.Model):
     ecf_rating = models.IntegerField(blank=True, null=True)
      
     def get_ecf_rating(self):
-        url = f'https://www.ecfrating.org.uk/v2/new/list_player.php?code={self.ecf_code}'
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
-            if data.get('status') == 'OK':
-                return data.get('rating')
+        if(self.ecf_code):
+            url = f'https://www.ecfrating.org.uk/v2/new/api.php?v2/ratings/S/{self.ecf_code}/{date.today().isoformat()}'
+            response = requests.get(url)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('success') == True:
+                    return data.get('original_rating')
+            return None
         return None
     
     def __str__(self):

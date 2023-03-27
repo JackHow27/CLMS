@@ -16,13 +16,18 @@ def reset_matches(modeladmin, request, queryset):
 reset_matches.short_description = "Reset Matches"
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('id', 'date', 'home_team', 'away_team', 'league')
+
+    def match_name(self, obj):
+        return str(obj)
+    
+    match_name.short_description = 'Matches'
+    list_display = ('match_name', 'date', 'home_team', 'away_team', 'league')
     list_filter = ('league',)
     search_fields = ('home_team__name', 'away_team__name')
     date_hierarchy = 'date'
 
 class LeagueAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('name')
     actions = [reset_matches]
 
 class TeamAdminForm(forms.ModelForm):
@@ -70,20 +75,19 @@ class PlayerAdminForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'password': forms.PasswordInput(render_value=True),
-            'ecf_rating': forms.NumberInput(attrs={'readonly': True}),
         }
 
 
     raw_password = forms.CharField(label='New Password', required=False, widget=PasswordInput)
-    ecf_rating = forms.IntegerField(required=False)
     teams = forms.ModelMultipleChoiceField(
         queryset=Team.objects.all(),
         widget=FilteredSelectMultiple("Teams", is_stacked=False),
-        required=False,
+        required=False, 
     )
 
     def save(self, commit=True):
         player = super(PlayerAdminForm, self).save(commit=False)
+        player.ecf_rating = player.get_ecf_rating
         if self.cleaned_data.get('generate_password'):
             password = make_password(None)
             username = player.username
@@ -111,7 +115,7 @@ class PlayerAdmin(admin.ModelAdmin):
     form = PlayerAdminForm
 
     fieldsets = (
-        (None, {'fields': ('first_name', 'last_name', 'phone_number', 'email', 'ecf_code', 'ecf_rating', 'raw_password')}),
+        (None, {'fields': ('first_name', 'last_name', 'username', 'phone_number', 'email', 'ecf_code', 'raw_password')}),
         ('Team', {'fields': ('teams',)}),
     )
 
