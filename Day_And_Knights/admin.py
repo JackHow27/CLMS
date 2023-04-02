@@ -27,7 +27,7 @@ class MatchAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
 
 class LeagueAdmin(admin.ModelAdmin):
-    list_display = ('name')
+    list_display = ('name', 'start_date', 'end_date')
     actions = [reset_matches]
 
 class TeamAdminForm(forms.ModelForm):
