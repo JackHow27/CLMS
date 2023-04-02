@@ -1,9 +1,9 @@
-# Django settings for your_website project.
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 import os
+from pathlib import Path
+from dotenv import load_dotenv, find_dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATE_DIR = os.path.join(BASE_DIR, "Day_And_Knights", "templates")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-v1o2-3(2!qzcthv3r0c6v*0+9*y!o46fs(+2$_$^@iw14g7!3b'
