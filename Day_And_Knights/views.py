@@ -25,10 +25,6 @@ def players(request):
 def results(request):
     return render(request, 'results.html')
 
-def match_list(request):
-    matches = Match.objects.all()
-    return render(request, 'match_list.html', {'matches': matches})
-
 class MatchDetailView(View):
     template_name = 'match.html'
 
@@ -50,5 +46,14 @@ def register(request):
     else:
         form = PlayerRegistrationForm()
     return render(request, 'register.html', {'form': form})
+
+def contact(request):
+    return render(request, 'contact.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def calendar(request):
+    return render(request, 'calendar.html')
 
 
