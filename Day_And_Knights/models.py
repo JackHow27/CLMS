@@ -77,12 +77,12 @@ class League(models.Model):
 class Team(models.Model):
     team_name = models.CharField(max_length=200)
     team_logo = models.ImageField(upload_to='team_logos/', blank=True, null=True)
-    description = models.TextField()
-    home_field = models.CharField(max_length=50)
-    home_address = models.CharField(max_length=100)
-    captain = models.OneToOneField(Player, on_delete=models.CASCADE)
-    players = models.ManyToManyField(Player, related_name='teams')
-    rank = models.IntegerField(default=0)
+    description = models.TextField(blank=True,null=True)
+    home_field = models.CharField(max_length=50, blank=True, null=True)
+    home_address = models.CharField(max_length=100, blank=True, null=True)
+    captain = models.OneToOneField(Player, on_delete=models.CASCADE, blank=True, null=True)
+    players = models.ManyToManyField(Player, related_name='teams', blank=True, null=True)
+    rank = models.IntegerField(default=0, blank=True, null=True)
     League = models.ManyToManyField(League, related_name='teams')
 
 

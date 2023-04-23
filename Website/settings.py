@@ -22,7 +22,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Day_And_Knights',  # add your app name here
+    'Day_And_Knights',
+    'Website',
 ]
 
 MIDDLEWARE = [
