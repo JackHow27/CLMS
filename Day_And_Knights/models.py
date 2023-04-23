@@ -110,8 +110,8 @@ class Match(models.Model):
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_matches')
     date = models.DateField(blank=True, null=True)
     time = models.TimeField(blank=True, null=True)
-    location = models.CharField(max_length=100, blank=True)
-    result = models.CharField(max_length=20, blank=True)
+    location = models.CharField(max_length=100,null=True, blank=True)
+    result = models.CharField(max_length=20,null=True, blank=True)
 
 
     def numeric_result(self, player):
