@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import match_list, register
+from .views import league_list, match_list, register
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -14,5 +14,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('calendar/', views.calendar, name='calendar'),
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
+    path('leagues/', views.league_list, name='leagues'),
+    path('league/', views.league, name='league'),
 
 ]

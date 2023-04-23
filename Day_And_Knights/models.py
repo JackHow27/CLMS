@@ -62,6 +62,10 @@ class League(models.Model):
     
     def get_teams(self):
         return self.teams.all()
+    
+    @property
+    def teams_count(self):
+        return self.get_teams().count()
 
     def save(self, *args, **kwargs):        
         from .utils import generate_matches, create_boards_for_league

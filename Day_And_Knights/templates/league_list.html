@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>List of Leagues</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>        
+        <th>No. Teams</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for league in leagues%}
+        <tr>
+          <td>{{ league.name }}</td>
+          <td>{{ league.start_date }}</td>
+          <td>{{ league.end_date }}</td>
+          <td>{{ league.teams_count }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">No Leagues found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
