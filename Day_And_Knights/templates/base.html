@@ -1,25 +1,55 @@
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'Day_And_Knights/style.css' %}">
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Knight and Day</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static '/Day_And_Knights/assets/css/main.css' %}"/>
+		<noscript><link rel="stylesheet" href="{% static '/Day_And_Knights/assets/css/noscript.css' %}" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="/league/" class="title">Knight and Day</a>
+				<nav>
+					{% if not request.user.is_authenticated %}
+					<a class="login" href="{% url 'login' %}">Log in</a>
+					{% else %}
+					<a class="logout" href="{% url 'logout' %}">Logout</a>
+					{% endif %}
+					<ul>
+						<li><a href="{% url 'home' %}">Home</a></li>
+						<li><a href="{% url 'matches' %}">Matches</a></li>
+						<li><a href="{% url 'teams' %}">Teams</a></li>
+						<li><a href="{% url 'players' %}">Players</a></li>
+						<li><a href="{% url 'calendar' %}">Calendar</a></li>						
+					</ul>
+				</nav>
+			</header>
+
+			{% block content %}
+			{% endblock %}
 
 
-<header>
-    <nav>
-      <div class="logo">
-        <a href="{% url 'home' %}">
-          <img src="{% static 'Day_And_Knights/images/logo.png' %}" alt="DayAndKnights Logo">
-        </a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="{% url 'home' %}">Home</a></li>
-        <li><a href="{% url 'matches' %}">Matches</a></li>
-        <li><a href="{% url 'teams' %}">Teams</a></li>
-        <li><a href="{% url 'players' %}">Players</a></li>
-      </ul>
-      <div class="burger">
-        <div class="line1"></div>
-        <div class="line2"></div>
-        <div class="line3"></div>
-      </div>
-    </nav>
-  </header>
-  
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Knight and Day. All rights reserved.</li><li>Editor: <a href="/league/contact">Jack Howorth</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="{% static '/Day_And_Knights/assets/js/jquery.min.js' %}"></script>
+			<script src="{% static '/Day_And_Knights/assets/js/jquery.scrollex.min.js' %}"></script>
+			<script src="{% static '/Day_And_Knights/assets/js/jquery.scrolly.min.js' %}"></script>
+			<script src="{% static '/Day_And_Knights/assets/js/browser.min.js' %}"></script>
+			<script src="{% static '/Day_And_Knights/assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static '/Day_And_Knights/assets/js/util.js' %}"></script>
+			<script src="{% static '/Day_And_Knights/assets/js/main.js' %}"></script>
+
+	</body>
+</html>

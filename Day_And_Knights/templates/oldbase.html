@@ -1,0 +1,25 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static '\Day_And_Knights\assets\css\ollie.css' %}">
+
+
+<header>
+    <nav>
+      <div class="logo">
+        <a href="{% url 'home' %}">
+          <img src="{% static 'Day_And_Knights/images/logo.png' %}" alt="DayAndKnights Logo">
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'matches' %}">Matches</a></li>
+        <li><a href="{% url 'teams' %}">Teams</a></li>
+        <li><a href="{% url 'players' %}">Players</a></li>
+      </ul>
+      <div class="burger">
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="line3"></div>
+      </div>
+    </nav>
+  </header>
+  
