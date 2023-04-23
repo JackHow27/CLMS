@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
-from .models import Match, Player, Team
+from .models import Match, Player, Team, League
 from django.contrib.auth.decorators import login_required
 from .forms import PlayerRegistrationForm
 
@@ -55,5 +55,17 @@ def login(request):
 
 def calendar(request):
     return render(request, 'calendar.html')
+
+def league_list(request):
+    leagues = League.objects.all()
+    return render(request, 'league_list.html', {'leagues': leagues})
+
+def league(request):
+    template_name = 'league.html'
+
+    def get(self, request, pk):
+        league = get_object_or_404(Match, pk=pk)
+        context = {'league': League}
+        return render(request, self.template_name, context)
 
 
