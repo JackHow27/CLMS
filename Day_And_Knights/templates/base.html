@@ -20,6 +20,9 @@
 					<a class="logout" href="{% url 'logout' %}">Logout</a>
 					{% endif %}
 					<ul>
+						{% if user.is_superuser %}
+    					<li><a href="{% url 'admin:index' %}">Admin</a></li>
+						{% endif %}
 						<li><a href="{% url 'home' %}">Home</a></li>
 						<li><a href="{% url 'matches' %}">Matches</a></li>
 						<li><a href="{% url 'teams' %}">Teams</a></li>
