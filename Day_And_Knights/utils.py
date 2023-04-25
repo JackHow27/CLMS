@@ -1,10 +1,10 @@
-from Day_And_Knights.models import Match, Board
+from Day_And_Knights.models import Match, Board, Tournament, Section, Round
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 
 
 
-def schedule_matches(league):
+def schedule_league_matches(league):
     # Generate match dates for the league
     match_dates = generate_match_dates(league.day_to_play, league.start_date, league.end_date)
 
@@ -95,7 +95,7 @@ def generate_matches(league):
                         )
                     matches.append(match)
 
-    schedule_matches(league)
+    schedule_league_matches(league)
 
     return matches
 
@@ -113,4 +113,59 @@ def create_boards_for_league(league):
         for board_number in range(1, league.boards_per_match + 1):
             if not Board.objects.filter(match=match, board_number=board_number).exists():
                 Board.objects.create(match=match, board_number=board_number)
+
+def create_tournament_sections(tournament):
+    for i in range(tournament.no_sections):
+        Section.objects.create(Tournament=tournament, name=i)
+
+
+def create_section_rounds(section):
+
+    players = section.players.all()
+    num_players = len(players)
+
+    if num_players % 2 == 1:
+        players.append(None)
+        num_players += 1
+
+    if section.Tournament.format == 'Swiss':
+        i == 1 
+        for i in range(section.no_rounds):
+            round = Round.object.create(section=section, round_number=i)
+            create_round_boards(round)
+        return
+    elif section.Tournament.format == 'Round Robin':
+        for i in range(num_players - 1):
+            round = Round.object.create(section=section, round_number=i)
+            create_round_boards(round)
+        return
+    elif section.Tournament.format == 'Single Elimination':
+        for i in range(num_players / 2):
+            round = Round.object.create(section=section, round_number=i)
+            create_round_boards(round)
+        return
+    elif section.Tournamnet.format == 'Double Elimination':
+        number_of_rounds = num_players / 2
+        if section.Tournament.double_elimination_bracket_reset:
+            number_of_rounds += 1
+        
+        for i in range(num_players / 2):
+            round = Round.object.create(section=section, round_number=i)
+            create_round_boards(round)
+        return
+
+def create_round_boards(round):
+    if round.section.Tournament.format == 'Swiss':
+
+        return
+    elif round.section.Tournament.format == 'Round Robin':
+
+        return
+    elif round.section.Tournament.format == 'Single Elimination':
+
+        return
+    elif round.section.Tournamnet.format == 'Double Elimination':
+
+        return
+    return
 

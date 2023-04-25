@@ -173,17 +173,19 @@ class Tournament(models.Model):
         ('Single Elimination', 'Single Elimination'),
         ('Double Elimination', 'Double Elimination')
     ])
+    double_elimination_bracket_reset = models.BooleanField(default=True)
 
 class Section():
     Tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='Section')
     name = models.CharField(max_length=100, default='All')
     no_rounds = models.IntegerField(null=True, default=0, blank=True)
+    players = models.ManyToManyField(Player)
 
 
 class Round():
     section = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='round')
-    datetime = models.DateTimeField()
-    Round_Number = models.IntegerField()
+    datetime = models.DateTimeField(blank=True, null=True)
+    round_number = models.IntegerField()
     boards = models.ManyToManyField(Board)
 
 
