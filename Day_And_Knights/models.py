@@ -89,9 +89,11 @@ class Team(models.Model):
     def __str__(self):
         return self.team_name
 
-
 class Board(models.Model):
-    match = models.ForeignKey('Match', on_delete=models.CASCADE, related_name='boards')
+    #match = models.ForeignKey('Match', on_delete=models.CASCADE, related_name='boards')
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
     board_number = models.IntegerField()
     white_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='white_boards',blank=True,null=True)
     black_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='black_boards',blank=True,null=True)
@@ -108,6 +110,9 @@ class Match(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='matches')
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches')
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_matches')
+    home_score = models.IntegerField()
+    away_score = models.IntegerField()
+    boards = models.ManyToManyField(Board)
     date = models.DateField(blank=True, null=True)
     time = models.TimeField(blank=True, null=True)
     location = models.CharField(max_length=100, blank=True)
@@ -139,7 +144,9 @@ class Match(models.Model):
         for player in away_team.players.all():
             away_score += self.numeric_result(player)
 
-        self.result = f"{home_score} - {away_score}"
+        self.home_score = home_score
+        self.away_score = away_score
+        self.result = f"{home_team.team_name}:{home_score} - {away_team.team_name}:{away_score}"
 
         
     def __str__(self):
@@ -151,12 +158,35 @@ class Match(models.Model):
         super(Match, self).save(*args, **kwargs)
         self.set_results()
 
-
-
     class Meta:
         ordering = ('date', 'time',)
     
     class Meta:
         verbose_name_plural = "matches"
+
+class Tournament(models.Model):
+    name = models.CharField(max_length=100)
+    no_sections = models.IntegerField()
+    format = models.CharField(max_length=50, choices=[
+        ('Swiss', 'Swiss'),
+        ('Round Robin', 'Round Robin'),
+        ('Single Elimination', 'Single Elimination'),
+        ('Double Elimination', 'Double Elimination')
+    ])
+
+class Section():
+    Tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='Section')
+    name = models.CharField(max_length=100, default='All')
+    no_rounds = models.IntegerField(null=True, default=0, blank=True)
+
+
+class Round():
+    section = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='round')
+    datetime = models.DateTimeField()
+    Round_Number = models.IntegerField()
+    boards = models.ManyToManyField(Board)
+
+
+
 
 
