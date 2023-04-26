@@ -107,7 +107,7 @@ def match_exists(team1, team2):
         return True
     except ObjectDoesNotExist:
         return False
-    
+
 def create_boards_for_league(league):
     for match in league.matches.all():
         for board_number in range(1, league.boards_per_match + 1):
@@ -132,17 +132,17 @@ def create_section_rounds(section):
         i == 1 
         for i in range(section.no_rounds):
             round = Round.object.create(section=section, round_number=i)
-            create_round_boards(round)
+            create_round_boards(round, players)
         return
     elif section.Tournament.format == 'Round Robin':
         for i in range(num_players - 1):
             round = Round.object.create(section=section, round_number=i)
-            create_round_boards(round)
+            create_round_boards(round, players)
         return
     elif section.Tournament.format == 'Single Elimination':
         for i in range(num_players / 2):
             round = Round.object.create(section=section, round_number=i)
-            create_round_boards(round)
+            create_round_boards(round, players)
         return
     elif section.Tournamnet.format == 'Double Elimination':
         number_of_rounds = num_players / 2
@@ -151,12 +151,17 @@ def create_section_rounds(section):
         
         for i in range(num_players / 2):
             round = Round.object.create(section=section, round_number=i)
-            create_round_boards(round)
+            create_round_boards(round, players)
         return
-
-def create_round_boards(round):
+    
+#WIP
+def create_round_boards(round, players):
+    num_players = len(players)
     if round.section.Tournament.format == 'Swiss':
-
+        for round in round.boards.all():
+            for i in range(num_players / 2 + 1):
+                boards += Board.objects.create(content_type=Round, object_id=round.id, content_object=round)
+                set_round_boards(boards, round, players)
         return
     elif round.section.Tournament.format == 'Round Robin':
 
@@ -169,3 +174,5 @@ def create_round_boards(round):
         return
     return
 
+def set_round_boards(boards, round, players):
+    return
