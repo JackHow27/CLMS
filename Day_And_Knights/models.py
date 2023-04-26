@@ -178,8 +178,8 @@ class Tournament(models.Model):
     timeformat = models.IntegerField()
     increment = models.IntegerField(default=0)
     round_format = models.CharField(max_length=50,default='Single Game', choices=[
-        ('Single Game')
-        ('Best of 3')
+        ('Single Game','Single Game'),
+        ('Best of 3', 'Best of 3')
     ])
 
 
