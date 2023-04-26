@@ -139,40 +139,65 @@ def create_section_rounds(section):
             round = Round.object.create(section=section, round_number=i)
             create_round_boards(round, players)
         return
-    elif section.Tournament.format == 'Single Elimination':
-        for i in range(num_players / 2):
-            round = Round.object.create(section=section, round_number=i)
-            create_round_boards(round, players)
-        return
-    elif section.Tournamnet.format == 'Double Elimination':
-        number_of_rounds = num_players / 2
-        if section.Tournament.double_elimination_bracket_reset:
-            number_of_rounds += 1
-        
-        for i in range(num_players / 2):
-            round = Round.object.create(section=section, round_number=i)
-            create_round_boards(round, players)
-        return
+    #elif section.Tournament.format == 'Single Elimination':
+    #    for i in range(num_players / 2):
+    #        round = Round.object.create(section=section, round_number=i)
+    #        create_round_boards(round, players)
+    #    return
+    #elif section.Tournamnet.format == 'Double Elimination':
+    #    number_of_rounds = num_players / 2
+    #    if section.Tournament.double_elimination_bracket_reset:
+    #        number_of_rounds += 1
+    #    
+    #    for i in range(num_players / 2):
+    #        round = Round.object.create(section=section, round_number=i)
+    #        create_round_boards(round, players)
+    #    return
     
 #WIP
 def create_round_boards(round, players):
     num_players = len(players)
     if round.section.Tournament.format == 'Swiss':
-        for round in round.boards.all():
-            for i in range(num_players / 2 + 1):
+        for i in range(num_players / 2 + 1):
                 boards += Board.objects.create(content_type=Round, object_id=round.id, content_object=round)
                 set_round_boards(boards, round, players)
         return
     elif round.section.Tournament.format == 'Round Robin':
-
+        for i in range(num_players / 2 + 1):
+                boards += Board.objects.create(content_type=Round, object_id=round.id, content_object=round)
+                set_round_boards(boards, round, players)
         return
-    elif round.section.Tournament.format == 'Single Elimination':
-
-        return
-    elif round.section.Tournamnet.format == 'Double Elimination':
-
-        return
+ # elif round.section.Tournament.format == 'Single Elimination':
+ #     for i in range(num_players / (2 * round.round_number)):
+ #             boards += Board.objects.create(content_type=Round, object_id=round.id, content_object=round)
+ #             set_round_boards(boards, round, players)
+ #     return
+ # elif round.section.Tournamnet.format == 'Double Elimination':
+ #     for i in range(num_players / (2 * (round.round_number - 1))):
+ #             boards += Board.objects.create(content_type=Round, object_id=round.id, content_object=round)
+ #             set_round_boards(boards, round, players)
+ #     return
     return
 
 def set_round_boards(boards, round, players):
+    if round.section.Tournament.format == 'Swiss':
+        if round.round_number == 1:
+            #Set boards according to get_ecf_rating
+            #Set Bye to bottom board
+            return
+        else:
+            #Set boards according to current score
+            #Set Bye to bottom board
+            return
+        
+    elif round.section.Tournament.format == 'Round Robin':
+
+       return
+ #  elif round.section.Tournament.format == 'Single Elimination':
+
+ #      return
+ #  elif round.section.Tournamnet.format == 'Double Elimination':
+
+ #      return
     return
+    

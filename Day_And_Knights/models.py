@@ -170,11 +170,18 @@ class Tournament(models.Model):
     format = models.CharField(max_length=50, choices=[
         ('Swiss', 'Swiss'),
         ('Round Robin', 'Round Robin'),
-        ('Single Elimination', 'Single Elimination'),
-        ('Double Elimination', 'Double Elimination')
+        #('Single Elimination', 'Single Elimination'),
+        #('Double Elimination', 'Double Elimination')
     ])
-    double_elimination_bracket_reset = models.BooleanField(default=True)
+    #double_elimination_bracket_reset = models.BooleanField(default=True)
     active = models.BooleanField(default=False)
+    timeformat = models.IntegerField()
+    increment = models.IntegerField(default=0)
+    round_format = models.CharField(max_length=50,default='Single Game', choices=[
+        ('Single Game')
+        ('Best of 3')
+    ])
+
 
 class Section():
     Tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='Section')
