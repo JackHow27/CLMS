@@ -67,5 +67,8 @@ class league(View):
         league = get_object_or_404(League, pk=pk)
         context = {'league': league}
         return render(request, self.template_name, context)
+    
+def test(request):
+    return render(request, 'test.html')
 
 

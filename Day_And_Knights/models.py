@@ -9,6 +9,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 
 class Player(models.Model):
@@ -158,4 +159,24 @@ class Match(models.Model):
     class Meta:
         verbose_name_plural = "matches"
 
+class Volunteer(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='vounteers')
+    player = models.ForeignKey(Player, on_delete=models.CASCADE,related_name="volunteered")
 
+    class Team(models.TextChoices):
+        Home_Team = 'Home', _('Home_Team')
+        Away_Team = 'Away', _('Away_Team')
+
+    team = models.CharField(
+        max_length=4,
+        choices=Team.choices,
+        default=Team.Home_Team,
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['match', 'player'], 
+                name='unique chapter'
+            )
+        ]

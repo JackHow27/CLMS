@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<table>
+    <thead>
+      <tr>
+        <th>Main Thread</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <table>
+            <thead>
+              <tr>
+                <th>Sub Thread 1</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sub Thread 1 Content</td>
+                <td>April 29, 2023</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>April 28, 2023</td>
+      </tr>
+      <tr>
+        <td>
+          <table>
+            <thead>
+              <tr>
+                <th>Sub Thread 2</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sub Thread 2 Content</td>
+                <td>April 27, 2023</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td>April 26, 2023</td>
+      </tr>
+    </tbody>
+  </table>
+
+  {% endblock %}
