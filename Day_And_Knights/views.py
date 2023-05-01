@@ -60,12 +60,12 @@ def league_list(request):
     leagues = League.objects.all()
     return render(request, 'league_list.html', {'leagues': leagues})
 
-def league(request):
+class league(View):
     template_name = 'league.html'
 
     def get(self, request, pk):
-        league = get_object_or_404(Match, pk=pk)
-        context = {'league': League}
+        league = get_object_or_404(League, pk=pk)
+        context = {'league': league}
         return render(request, self.template_name, context)
 
 

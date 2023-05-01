@@ -1,4 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <h1>  {{ league.name }} </h1>
+  <p>Start Date: {{ league.start_date }}</p>
+  <p>End Date: {{ league.end_date }}</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Match</th>
+        <th>Date</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for match in league.matches.all %}
+        <tr>
+          <td><a href="{% url 'match_detail' match.id %}">{{ match }}</td>
+          <td>{{ match.date }}</td>
+          <td>{{ match.result }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">No Matches found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
