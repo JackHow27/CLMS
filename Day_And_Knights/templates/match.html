@@ -2,13 +2,82 @@
 
 {% block content %}
   <h1>Match Details</h1>
-  <p>League: <a href="{% url 'league' match.league.id %}">{{ match.league.name }} - {{ match.league.start_date }} > {{ match.league.end_date }}</a> </p>
-  <p>Home Team: {{ match.home_team }}</p>
-  <p>Away Team: {{ match.away_team }}</p>
-  <p>Date: {{ match.date }}</p>
+  <h3>League: <a href="{% url 'league' match.league.id %}">{{ match.league.name }} - {{ match.league.start_date }} > {{ match.league.end_date }}</a></h3>
+  <h3>Venue: {{match.home_team.home_address}}</h3>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <table>
+            <thead>
+              <h2>{{ match.home_team }} - Home Team</h2>
+              <tr>
+                <th>Board Number</th>
+                <th>Player</th>
+                <th>Colour</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for board in match.boards.all %} 
+              {% if not board.board_number|divisibleby:2 %} 
+              <tr>
+                <td>{{ board.board_number }}</td>
+                <td>{{ board.black_player }}</td>
+                <td>Black</td>
+              </tr>
+              {% else %}
+              <tr>
+                <td>{{ board.board_number }}</td>
+                <td>{{ board.white_player }}</td>
+                <td>White</td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <table>
+            <thead>
+              <h2>{{ match.away_team }} - Away Team</h2>
+              <tr>
+                <th>Board Number</th>
+                <th>Player</th>
+                <th>Colour</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for board in match.boards.all %} 
+              {% if not board.board_number|divisibleby:2 %} 
+              <tr>
+                <td>{{ board.board_number }}</td>
+                <td>{{ board.white_player }}</td>
+                <td>White</td>
+              </tr>
+              {% else %}
+              <tr>
+                <td>{{ board.board_number }}</td>
+                <td>{{ board.black_player }}</td>
+                <td>Black</td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
   {% if request.user.is_authenticated %}
+  <h2>Volunteer for Match</h2>
   <form method="post" action="">
     {% csrf_token %}
+    <label for="Teams">Pick Team:</label>
+      <select id="Teams" name="Teams">
+        <option value="Home">{{match.home_team}}</option>
+        <option value="Away">{{match.away_team}}</option>
+      </select>
     <button type="submit">Volunteer</button>
   </form>
   {% endif %}

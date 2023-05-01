@@ -9,6 +9,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 
 class Player(models.Model):
@@ -88,11 +89,9 @@ class Team(models.Model):
     def __str__(self):
         return self.team_name
 
+
 class Board(models.Model):
-    #match = models.ForeignKey('Match', on_delete=models.CASCADE, related_name='boards')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
+    match = models.ForeignKey('Match', on_delete=models.CASCADE, related_name='boards')
     board_number = models.IntegerField()
     white_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='white_boards',blank=True,null=True)
     black_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='black_boards',blank=True,null=True)
@@ -109,13 +108,10 @@ class Match(models.Model):
     league = models.ForeignKey(League, on_delete=models.CASCADE, related_name='matches')
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_matches')
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_matches')
-    home_score = models.IntegerField()
-    away_score = models.IntegerField()
-    boards = models.ManyToManyField(Board)
     date = models.DateField(blank=True, null=True)
     time = models.TimeField(blank=True, null=True)
-    location = models.CharField(max_length=100,null=True, blank=True)
-    result = models.CharField(max_length=20,null=True, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    result = models.CharField(max_length=20, blank=True)
 
 
     def numeric_result(self, player):
@@ -143,9 +139,7 @@ class Match(models.Model):
         for player in away_team.players.all():
             away_score += self.numeric_result(player)
 
-        self.home_score = home_score
-        self.away_score = away_score
-        self.result = f"{home_team.team_name}:{home_score} - {away_team.team_name}:{away_score}"
+        self.result = f"{home_score} - {away_score}"
 
         
     def __str__(self):
@@ -156,6 +150,8 @@ class Match(models.Model):
             self.location = self.home_team.home_field
         super(Match, self).save(*args, **kwargs)
         self.set_results()
+
+
 
     class Meta:
         ordering = ('date', 'time',)
@@ -190,6 +186,7 @@ class Section():
     current_round = models.PositiveIntegerField(default=1)
 
 
+
 class Round():
     section = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='round')
     datetime = models.DateTimeField(blank=True, null=True)
@@ -197,6 +194,24 @@ class Round():
     boards = models.ManyToManyField(Board)
 
 
+class Volunteer(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='vounteers')
+    player = models.ForeignKey(Player, on_delete=models.CASCADE,related_name="volunteered")
 
+    class Team(models.TextChoices):
+        Home_Team = 'Home', _('Home_Team')
+        Away_Team = 'Away', _('Away_Team')
 
+    team = models.CharField(
+        max_length=4,
+        choices=Team.choices,
+        default=Team.Home_Team,
+    )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['match', 'player'], 
+                name='unique chapter'
+            )
+        ]
