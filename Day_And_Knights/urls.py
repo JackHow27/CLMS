@@ -15,6 +15,6 @@ urlpatterns = [
     path('calendar/', views.calendar, name='calendar'),
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
     path('leagues/', views.league_list, name='leagues'),
-    path('league/', views.league, name='league'),
+    path('league/<int:pk>/', views.league.as_view(), name='league'),
 
 ]

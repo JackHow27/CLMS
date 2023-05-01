@@ -2,11 +2,14 @@
 
 {% block content %}
   <h1>Match Details</h1>
+  <p>League: <a href="{% url 'league' match.league.id %}">{{ match.league.name }} - {{ match.league.start_date }} > {{ match.league.end_date }}</a> </p>
   <p>Home Team: {{ match.home_team }}</p>
   <p>Away Team: {{ match.away_team }}</p>
   <p>Date: {{ match.date }}</p>
+  {% if request.user.is_authenticated %}
   <form method="post" action="">
     {% csrf_token %}
     <button type="submit">Volunteer</button>
   </form>
+  {% endif %}
 {% endblock %}
